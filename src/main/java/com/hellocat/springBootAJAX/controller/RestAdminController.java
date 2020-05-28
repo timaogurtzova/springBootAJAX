@@ -28,37 +28,36 @@ public class RestAdminController {
 
     @RequestMapping(value = "/getAllRoles", method = RequestMethod.POST)
     public ResponseEntity<List<Role>> getRoleList() {
-        return new ResponseEntity<List<Role>>(roleService.findAllRoles(), HttpStatus.OK);
+        return new ResponseEntity<>(roleService.findAllRoles(), HttpStatus.OK);
     }
 
     @RequestMapping("/getUser/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
-        return new ResponseEntity<User>(userService.findUserById(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/createUser")
+    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     public ResponseEntity<Void> createUser(@RequestBody User user) {
-        try {
-            userService.saveUser(user);
-        }catch (Exception e){
-            //bad girl
+        boolean rezult = userService.saveUser(user);
+        if (!rezult){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/updateUser")
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public ResponseEntity<Void> updateUser(@RequestBody User user) {
         try {
             userService.updateUser(user);
         }catch (Exception e){
             //bad girl too
         }
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteUser/{id}")
+    @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

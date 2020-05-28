@@ -61,6 +61,9 @@ $('#buttonAddNewUser').click(function () {
             alert("User was added in database");
             getAllUsers();
         },
+        error:function () {
+            alert("Fail");
+        }
     })
 });
 
